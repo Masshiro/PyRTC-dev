@@ -1,0 +1,3 @@
+[submodule "alphartc"]
+	path = alphartc
+	url = https://github.com/OpenNetLab/AlphaRTC.git
