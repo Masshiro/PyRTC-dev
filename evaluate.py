@@ -2,6 +2,7 @@ import argparse, json
 
 from evaluate.eval_video import VideoEvaluation, init_video_argparse, get_video_score
 from evaluate.eval_network import NetworkEvaluation, init_network_argparse, get_network_score
+from utils.bwe_extract import bwe_extract
 
 
 if __name__ == "__main__":
@@ -32,3 +33,5 @@ if __name__ == "__main__":
             f.write(json.dumps(out_dict))
     else:
         print(json.dumps(out_dict))
+    
+    bwe_extract(args.dst_network_log, 'share/output/bwe.txt')
