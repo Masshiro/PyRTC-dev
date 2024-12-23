@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import subprocess, tempfile, re
-from utils.video_info import VideoInfo
+from .video_info import VideoInfo
 from tempfile import NamedTemporaryFile
 from abc import ABC, abstractmethod
 

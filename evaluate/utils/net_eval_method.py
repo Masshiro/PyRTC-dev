@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from utils.net_info import NetInfo
+from .net_info import NetInfo
 import numpy as np
 from abc import ABC, abstractmethod
 

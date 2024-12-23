@@ -3,8 +3,8 @@
 
 import subprocess, json, argparse, requests, os
 from tempfile import NamedTemporaryFile
-from utils.audio_info import AudioInfo
-from utils.audio_eval_method import AudioEvalMethod, AudioEvalMethodDNSMOS
+from .utils.audio_info import AudioInfo
+from .utils.audio_eval_method import AudioEvalMethod, AudioEvalMethodDNSMOS
 
 
 description = \

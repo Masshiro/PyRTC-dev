@@ -3,7 +3,7 @@
 
 import requests, json
 import soundfile as sf
-from utils.audio_info import AudioInfo
+from .audio_info import AudioInfo
 from urllib.parse import urlparse, urljoin
 from abc import ABC, abstractmethod
 

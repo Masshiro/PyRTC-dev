@@ -3,10 +3,10 @@
 
 import argparse, json, subprocess
 from tempfile import NamedTemporaryFile
-from utils.video_info import VideoInfo
-from utils.video_eval_method import VideoEvalMethodVmaf, VideoEvalMethod
-from utils.video_align_method import VideoAlignMethodFfmpeg, VideoAlignMethod, VideoAlignMethodOcr
-from eval_audio import get_remote_ground
+from .utils.video_info import VideoInfo
+from .utils.video_eval_method import VideoEvalMethodVmaf, VideoEvalMethod
+from .utils.video_align_method import VideoAlignMethodFfmpeg, VideoAlignMethod, VideoAlignMethodOcr
+from .eval_audio import get_remote_ground
 
 
 description = \
@@ -126,8 +126,8 @@ def init_video_argparse():
     parser.add_argument("--ground_video", type=float, default=-1, help="the video score of a special scenario ground truth. -1 means not use ground")
     # for video evaluation
     parser.add_argument("--video_eval_method", type=str, default="vmaf", choices=["vmaf"], help="the method to evaluate video, like vmaf")
-    parser.add_argument("--src_video", type=str, required=True, default=None, help="the path of source video")
-    parser.add_argument("--dst_video", type=str, required=True, default=None, help="the path of destination video")
+    parser.add_argument("--src_video", type=str, default=None, help="the path of source video")
+    parser.add_argument("--dst_video", type=str, default=None, help="the path of destination video")
     parser.add_argument("--frame_align_method", type=str, default="ffmpeg", choices=["None", "ffmpeg", "ocr"], help="how to do frame alignment. None means not to do frame align")
     parser.add_argument("--model_path", type=str, default=None, help="the path of vmaf model")
     # required by the video format of yuv raw video

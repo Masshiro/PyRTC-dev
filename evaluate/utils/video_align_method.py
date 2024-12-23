@@ -3,7 +3,7 @@
 
 import subprocess, os
 from tempfile import NamedTemporaryFile
-from utils.video_info import VideoInfo
+from .video_info import VideoInfo
 from abc import ABC, abstractmethod
 
 

@@ -14,9 +14,10 @@ This script provide multi methods to evaluate quality of video, audio and networ
 
 def init_argparse():
     video_parser = init_video_argparse()
-    audio_parser = init_audio_argparse()
+    # audio_parser = init_audio_argparse()
     network_parser = init_network_argparse()
-    parser = argparse.ArgumentParser(description=description, parents=[video_parser, audio_parser, network_parser], conflict_handler='resolve')
+    # parser = argparse.ArgumentParser(description=description, parents=[video_parser, audio_parser, network_parser], conflict_handler='resolve')
+    parser = argparse.ArgumentParser(description=description, parents=[video_parser, network_parser], conflict_handler='resolve')
 
     args = parser.parse_args()
 
@@ -34,10 +35,10 @@ if __name__ == "__main__":
     out_dict["video"] = get_video_score(args)
     out_dict["network"] = get_network_score(args)
     # We don't consider audio now. Give full score for the audio directly.
-    out_dict["audio"] = 100.0
+    # out_dict["audio"] = 100.0
     # final_score = 0.2 * video + 0.1 * audio + (0.2 * delay_score + 0.2 * recv_rate_score + 0.3 * loss_score)
     # We don't consider audio now. Give full score for the audio directly.
-    out_dict["final_score"] = 0.2 * out_dict["video"] + out_dict["network"] + 10
+    out_dict["final_score"] = 0.2 * out_dict["video"] + out_dict["network"]
     if args.output:
         with open(args.output, 'w') as f:
             f.write(json.dumps(out_dict))

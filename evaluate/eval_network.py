@@ -3,9 +3,9 @@
 
 import argparse, json
 import numpy as np
-from utils.net_info import NetInfo
-from utils.net_eval_method import NetEvalMethod, NetEvalMethodNormal
-from eval_audio import get_remote_ground
+from .utils.net_info import NetInfo
+from .utils.net_eval_method import NetEvalMethod, NetEvalMethodNormal
+from .eval_audio import get_remote_ground
 
 
 description = \
@@ -47,7 +47,7 @@ def init_network_argparse():
     parser.add_argument("--ground_service", type=str, default=None, help="the url where you want to get the score of ground truth")
     # for network evaluation
     parser.add_argument("--network_eval_method", type=str, default="normal", choices=["normal"], help="the method to evaluate network.")
-    parser.add_argument("--dst_network_log", type=str, required=True, default=None, help="the path of network log.")
+    parser.add_argument("--dst_network_log", type=str, default=None, help="the path of network log.")
     parser.add_argument("--max_delay", type=float, default=400, help="the max packet delay.")
     parser.add_argument("--ground_recv_rate", type=float, default=500, help="the receive rate of a special scenario ground truth.")
 
