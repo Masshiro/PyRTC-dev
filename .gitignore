@@ -1,5 +1,7 @@
 __pycache__
 
+.gclient*
+
 share/output/*.wav
 share/output/*.yuv
 share/output/*.log
