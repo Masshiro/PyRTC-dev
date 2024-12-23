@@ -13,8 +13,8 @@ git submodule update --init --recursive
 - For the first-time run: make sure `gn` tool is correctly configured: 
 ```shell
 cd alphartc
-gclient sync
-mv src/* .
+gclient sync && mv src/* .
+cd ..
 ```
 When it's done, verify by calling `gn --version`.
 

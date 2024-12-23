@@ -1,1 +1,5 @@
 __pycache__
+
+share/output/*.wav
+share/output/*.yuv
+share/output/*.log

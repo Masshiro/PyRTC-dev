@@ -8,8 +8,8 @@ target_pylib_dir="${target_dir}/pylib"
 
 export LD_LIBRARY_PATH="${target_lib_dir}:$LD_LIBRARY_PATH"
 export PYTHONPATH="${target_pylib_dir}:$PYTHONPATH"
-export PATH="target/lib:$PATH"
-export PATH="target/bin:$PATH"
+export PATH="alphartc/target/lib:$PATH"
+export PATH="alphartc/target/bin:$PATH"
 
 executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/sender_pyinfer.json"

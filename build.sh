@@ -1,7 +1,9 @@
 #!/bin/bash
 
-output_dir="alphartc/out/Default"
-target_dir="alphartc/target"
+cd alphartc
+
+output_dir="out/Default"
+target_dir="target"
 target_lib_dir="${target_dir}/lib"
 target_bin_dir="${target_dir}/bin"
 target_pylib_dir="${target_dir}/pylib"
@@ -30,15 +32,17 @@ mkdir -p "${target_pylib_dir}"
 
 
 echo "=> Copying files and shared libraries..."
-cp -r share/input/* "${target_bin_dir}"
-cp alphartc/modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
-cp alphartc/modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
+cp -r ../share/input/* "${target_bin_dir}"
+cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
+cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
 
 
 echo "=> Copying executables and Python scripts..."
 cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
-cp alphartc/examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
-cp alphartc/modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
+cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
+cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
 
 
 echo "=> Build and file copy processes completed."
+
+cd .. # get back to the root
