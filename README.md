@@ -5,7 +5,7 @@
 ```shell
 git clone --recurse-submodules <URL>
 ```
-or use simple clone and then run
+or update the cloned repo
 ```shell
 git submodule update --init --recursive
 ```
