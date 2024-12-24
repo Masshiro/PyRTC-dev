@@ -10,6 +10,11 @@ or update the cloned repo
 git submodule update --init --recursive
 ```
 
+- To prevent unexpected changes to submodules, you may want to run:
+```shell
+git config submodule.alphartc.ignore all
+```
+
 - For the first-time run: make sure `gn` tool is correctly configured: 
 ```shell
 cd alphartc
@@ -31,6 +36,17 @@ When it's done, verify by calling `gn --version`.
 - For the sender client, use script in another shell to start:
 ```shell
 . serverless_sender.sh
+```
+
+- Maintenance
+```shell
+cd alphartc
+git pull origin main
+
+cd ..
+git add alphartc
+git commit -m "Update alphartc to latest upstream version"
+git push origin <branch_name>
 ```
 
 ## TODO
