@@ -7,9 +7,8 @@ output=$(gn --version 2>&1)
 if [[ $output =~ ^[0-9]{3,} ]]; then
     echo "=> Checking gn... It is correctly configured: $output"
 else
-    echo "Error: run 'gclient sync' in alphartc folder first" >&2
-    cd ..
-    exit 1
+    echo "=> Checking gn... Required to configure gn, please wait..."
+    gclient sync && mv src/* .
 fi
 
 
