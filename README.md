@@ -59,3 +59,7 @@ git push origin <branch_name>
     - `test.yuv` (test media, only video is supported)
     - `onnx-model.onnx`
     - `BandwidthEstimator.py`
+
+## Resources
+- [AlphaRTC](https://github.com/OpenNetLab/AlphaRTC)
+- [Mahimahi Manual](https://manpages.debian.org/testing/mahimahi/)
