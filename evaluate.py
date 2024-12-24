@@ -12,12 +12,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(parents=[video_parser, network_parser], conflict_handler='resolve')
     args = parser.parse_args([])
 
-    args.src_video = 'share/input/testmedia/test.yuv'
-    args.dst_video = 'share/output/outvideo.yuv'
-    args.video_size = "320x240"
+    with open('share/input/receiver_pyinfer.json', 'r') as f:
+        path_config = json.load(f)
+    args.src_video = path_config['video_source']['video_file']['file_path']
+    args.dst_video = path_config['save_to_file']['video']['file_path']
+    args.video_size = f'{path_config['save_to_file']['video']['width']}x{path_config['save_to_file']['video']['height']}'
     args.pixel_format = "420"
     args.bitdepth = "8"
-    args.dst_network_log = 'share/output/webrtc.log'
+    args.dst_network_log = path_config['logging']['log_output_path']
     args.output = 'share/output/scores.json'
 
     # print(args)
