@@ -2,6 +2,17 @@
 
 cd alphartc
 
+
+output=$(gn --version 2>&1)
+if [[ $output =~ ^[0-9]{3,} ]]; then
+    echo "=> Checking gn... It is correctly configured: $output"
+else
+    echo "Error: run 'gclient sync' in alphartc folder first" >&2
+    cd ..
+    exit 1
+fi
+
+
 output_dir="out/Default"
 target_dir="target"
 target_lib_dir="${target_dir}/lib"
