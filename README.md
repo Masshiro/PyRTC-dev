@@ -13,6 +13,7 @@ git submodule update --init --recursive
 - To prevent unexpected changes to submodules, you may want to run:
 ```shell
 git config submodule.alphartc.ignore all
+git update-index --assume-unchanged .gclient_previous_sync_commits
 ```
 
 - For the first-time run: make sure `gn` tool is correctly configured: 
