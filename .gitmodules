@@ -1,4 +1,4 @@
 
 [submodule "alphartc"]
 	path = alphartc
-	url = git@github.com:OpenNetLab/AlphaRTC.git
+	url = https://github.com/OpenNetLab/AlphaRTC.git
