@@ -13,6 +13,11 @@ export PATH="alphartc/target/bin:$PATH"
 executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/receiver_pyinfer.json"
 
+if [ ! -z "$MAHIMAHI_BASE" ]; then
+  jq --arg ip "$MAHIMAHI_BASE" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
+  jq --arg ip "$MAHIMAHI_BASE" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
+fi
+
 
 if [[ ! -f "$executable" ]]; then
     echo "Error: Executable file '$executable' not found."

@@ -50,6 +50,9 @@ git commit -m "Update alphartc to latest upstream version"
 git push origin <branch_name>
 ```
 
+## Requirements
+- `jq`: `sudo apt-get install jq`
+
 ## TODO
 - [ ] Build a JSON configration tool (set options and eventually generate corresponding files e.g. `sender_pyinfer.json`)
 

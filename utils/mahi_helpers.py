@@ -33,10 +33,10 @@ def generate_mahimahi_command(config_path: str) -> str:
 
     return command
 
-def config_send_to_ip(mahimahi_base):
+def config_mahimahi_ip(mahimahi_base):
     with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "r") as f:
         config = json.load(f)
-    config["send_to_ip"] = mahimahi_base
+    config["dest_ip"] = mahimahi_base
     with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "w") as f:
         json.dump(config, f, indent=4)
 
