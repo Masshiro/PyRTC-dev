@@ -5,5 +5,5 @@ __pycache__
 share/output/*.wav
 share/output/*.yuv
 share/output/*.log
-share/output/*.json
-share/output/*.txt
+share/output/scores*
+share/output/bwe*

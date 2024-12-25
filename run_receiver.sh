@@ -14,8 +14,14 @@ executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/receiver_pyinfer.json"
 
 if [ ! -z "$MAHIMAHI_BASE" ]; then
-  jq --arg ip "$MAHIMAHI_BASE" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
-  jq --arg ip "$MAHIMAHI_BASE" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
+  DEST_IP=$(
+    ip addr show ingress \
+      | grep -w "inet" \
+      | awk '{print $2}' \
+      | cut -d/ -f1
+  )
+  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
+  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
 fi
 
 

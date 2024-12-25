@@ -1,5 +1,3 @@
 {
-    "delay": 50,
-    "queue_size": 1600,
-    "trace_file": "ATT-LTE-driving.up"
+    "delay": 20
 }

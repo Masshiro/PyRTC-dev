@@ -7,7 +7,7 @@ current_dir = Path(__file__).resolve().parent
 project_root = current_dir.parent   # locate root directory of the project
 # print("The root directory of the project is", project_root)
 DEFAULT_DELAY = 0
-DEFAULT_TRACE = f'{project_root}/traces/med_30mbps.trace'
+DEFAULT_TRACE = "med_30mbps.trace"
 DEFAULT_QUEUE = 1600
 
 
@@ -29,7 +29,7 @@ def generate_mahimahi_command(config_path: str) -> str:
     queue_size = mahimahi_settings.get('queue_size', DEFAULT_QUEUE)
 
     command = f"mm-delay {delay} {loss_directive}".strip()
-    command += f" mm-link traces/{trace_file} traces/{trace_file} --downlink-queue=droptail --downlink-queue-args=bytes={queue_size}"
+    command += f" mm-link {project_root}/traces/{trace_file} {project_root}/traces/{trace_file} --downlink-queue=droptail --downlink-queue-args=bytes={queue_size}"
 
     return command
 
