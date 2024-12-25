@@ -1,11 +1,12 @@
 import subprocess
 import argparse, json
 import time
+import os
 
 from evaluate.eval_video import init_video_argparse, get_video_score
 from evaluate.eval_network import init_network_argparse, get_network_score
 from utils.bwe_extract import bwe_extract
-from utils.mahi_helpers import generate_mahimahi_command
+from utils.mahi_helpers import generate_mahimahi_command, config_send_to_ip
 
 def run_script(command):
     """run a shell script"""
@@ -27,6 +28,8 @@ def send_recv_process(enable_mahimahi, mahi_config):
         if enable_mahimahi:
             print("Starting receiver with Mahimahi enabled...")
             mahi_cmd = generate_mahimahi_command(mahi_config)
+            mahimahi_base = os.getenv("MAHIMAHI_BASE", "0.0.0.0")
+            config_send_to_ip(mahimahi_base)
             receiver_cmd = f"{mahi_cmd} -- sh -c '. ./run_receiver.sh'"
             receiver_process = run_script(receiver_cmd)
             time.sleep(5)

@@ -33,6 +33,13 @@ def generate_mahimahi_command(config_path: str) -> str:
 
     return command
 
+def config_send_to_ip(mahimahi_base):
+    with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "r") as f:
+        config = json.load(f)
+    config["send_to_ip"] = mahimahi_base
+    with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "w") as f:
+        json.dump(config, f, indent=4)
+
 
 if __name__ == '__main__':
     command = generate_mahimahi_command('share/input/mahimahi.json')
