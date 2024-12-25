@@ -23,62 +23,17 @@ def build_process():
     except Exception as e:
         print(f"Error: {e}")
 
+
 def send_recv_process(enable_mahimahi, mahi_config):
-    try:
-        if enable_mahimahi:
-            print("Starting receiver with Mahimahi enabled...")
-            mahi_cmd = generate_mahimahi_command(mahi_config)
-            # mahi_cmd = "mm-loss uplink 0.1 mm-delay 20"
-            # mahi_cmd = "mm-delay 20"
-            # mahimahi_base = os.getenv("MAHIMAHI_BASE", "0.0.0.0")
-            # config_mahimahi_ip("$MAHIMAHI_BASE")
-            # recv_cmd = ". ./run_receiver.sh"
-            # receiver_cmd = f"{mahi_cmd} bash -c '{recv_cmd}; exec bash'"
-            # receiver_cmd = f"{mahi_cmd} -- bash -c '. run_receiver.sh'"
-            receiver_cmd = f"{mahi_cmd} -- bash -c 'ip addr show'"
-            # receiver_process = run_script(receiver_cmd)
-            receiver_process = subprocess.Popen(receiver_cmd, shell=True, executable='/bin/bash')
-            time.sleep(10)
-        else:
-            print("Starting receiver...")
-            receiver_cmd = ". ./run_receiver.sh"
-            receiver_process = run_script(receiver_cmd)
-            time.sleep(5)
-
-        print("Starting sender...")
-        sender_cmd = ". ./run_sender.sh"
-        sender_process = run_script(sender_cmd)
-
-        receiver_process.wait()
-        sender_process.wait()
-
-        # if enable_mahimahi:
-        #     mahimahi_process.terminate()
-        #     print("Mahimahi simulated links are terminated.")
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-def send_recv_process_test(enable_mahimahi, mahi_config):
     try:
         if enable_mahimahi:
             print("Starting receiver & sender with Mahimahi enabled...")
             mahi_cmd = generate_mahimahi_command(mahi_config)
-            receiver_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh'"
-            send_recv_process = run_script(receiver_cmd)
-            send_recv_process.wait()
+            run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh'"
         else:
-            print("Starting receiver...")
-            receiver_cmd = ". ./run_receiver.sh"
-            receiver_process = run_script(receiver_cmd)
-            time.sleep(5)
-
-            print("Starting sender...")
-            sender_cmd = ". ./run_sender.sh"
-            sender_process = run_script(sender_cmd)
-            receiver_process.wait()
-            sender_process.wait()
-
+            run_both_cmd = ". ./run_both.sh"
+        send_recv_process = run_script(run_both_cmd)
+        send_recv_process.wait()
 
     except Exception as e:
         print(f"Error: {e}")
@@ -126,5 +81,5 @@ if __name__ == "__main__":
 
     if args.build:
         build_process()
-    send_recv_process_test(enable_mahimahi=args.mahimahi, mahi_config=args.mahi_config)
+    send_recv_process(enable_mahimahi=args.mahimahi, mahi_config=args.mahi_config)
     evaluate_process()
