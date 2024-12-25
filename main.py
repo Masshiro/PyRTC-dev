@@ -28,7 +28,7 @@ def send_recv_process(enable_mahimahi, mahi_config):
             print("Starting receiver with Mahimahi enabled...")
             mahi_cmd = generate_mahimahi_command(mahi_config)
             receiver_cmd = f"{mahi_cmd} -- sh -c '. ./run_receiver.sh'"
-            mahimahi_process = run_script(receiver_cmd)
+            receiver_process = run_script(receiver_cmd)
             time.sleep(5)
         else:
             print("Starting receiver...")
@@ -43,9 +43,9 @@ def send_recv_process(enable_mahimahi, mahi_config):
         receiver_process.wait()
         sender_process.wait()
 
-        if enable_mahimahi:
-            mahimahi_process.terminate()
-            print("Mahimahi simulated links are terminated.")
+        # if enable_mahimahi:
+        #     mahimahi_process.terminate()
+        #     print("Mahimahi simulated links are terminated.")
 
     except Exception as e:
         print(f"Error: {e}")
