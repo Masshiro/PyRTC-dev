@@ -6,7 +6,7 @@ import os
 from evaluate.eval_video import init_video_argparse, get_video_score
 from evaluate.eval_network import init_network_argparse, get_network_score
 from utils.bwe_extract import bwe_extract
-from utils.mahi_helpers import generate_mahimahi_command, config_mahimahi_ip
+from utils.mahi_helpers import generate_mahimahi_command
 
 def run_script(command):
     """run a shell script"""
