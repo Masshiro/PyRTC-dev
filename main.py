@@ -30,6 +30,7 @@ def send_recv_process(enable_mahimahi, mahi_config):
             print("Starting receiver & sender with Mahimahi enabled...")
             mahi_cmd = generate_mahimahi_command(mahi_config)
             run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh'"
+            # run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh' -- bash -c '. ./run_sender.sh'"
         else:
             run_both_cmd = ". ./run_both.sh"
         send_recv_process = run_script(run_both_cmd)
@@ -58,7 +59,7 @@ def evaluate_process():
 
     out_dict["video"] = get_video_score(args)
     out_dict["network"] = get_network_score(args)
-    out_dict["final_score"] = 0.2 * out_dict["video"] + out_dict["network"]
+    out_dict["final_score"] = 0.5 * out_dict["video"] + 0.5 * out_dict["network"]
 
     if args.output:
         with open(args.output, 'w') as f:

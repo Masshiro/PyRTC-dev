@@ -20,9 +20,12 @@ if [ ! -z "$MAHIMAHI_BASE" ]; then
       | awk '{print $2}' \
       | cut -d/ -f1
   )
-  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
-  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
+else
+  DEST_IP="0.0.0.0"
 fi
+
+jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
+jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
 
 
 if [[ ! -f "$executable" ]]; then
