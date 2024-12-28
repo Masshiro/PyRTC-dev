@@ -53,15 +53,6 @@ git push origin <branch_name>
 ## Requirements
 - `jq`: `sudo apt-get install jq`
 
-## TODO
-- [ ] Build a JSON configration tool (set options and eventually generate corresponding files e.g. `sender_pyinfer.json`)
-
-- [ ] `share/input` (everything in `examples/peerconnection/serverless/corpus/`):
-    - `sender_pyinfer.json` & `receiver_pyinfer.json`
-    - `sender.json` & `receiver.json`
-    - `test.yuv` (test media, only video is supported)
-    - `onnx-model.onnx`
-    - `BandwidthEstimator.py`
 
 ## Resources
 - [AlphaRTC](https://github.com/OpenNetLab/AlphaRTC)

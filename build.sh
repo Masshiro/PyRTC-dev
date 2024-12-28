@@ -2,6 +2,7 @@
 
 cd alphartc
 
+echo "=> Building AlphaRTC"
 
 output=$(gn --version 2>&1)
 if [[ $output =~ ^[0-9]{3,} ]]; then
@@ -41,18 +42,18 @@ mkdir -p "${target_bin_dir}"
 mkdir -p "${target_pylib_dir}"
 
 
-echo "=> Copying files and shared libraries..."
-cp -r ../share/input/* "${target_bin_dir}"
-cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
-cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
+# echo "=> Copying files and shared libraries..."
+# cp -r ../share/input/* "${target_bin_dir}"
+# cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
+# cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
 
 
-echo "=> Copying executables and Python scripts..."
-cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
-cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
-cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
+# echo "=> Copying executables and Python scripts..."
+# cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
+# cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
+# cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
 
 
-echo "=> Build and file copy processes completed."
+echo "=> AlphaRTC build completed."
 
 cd .. # get back to the root

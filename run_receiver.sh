@@ -13,6 +13,16 @@ export PATH="alphartc/target/bin:$PATH"
 executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/receiver_pyinfer.json"
 
+
+cp -r /share/input/* "${target_bin_dir}"
+cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
+cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
+
+cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
+cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
+cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
+
+
 if [ ! -z "$MAHIMAHI_BASE" ]; then
   DEST_IP=$(
     ip addr show ingress \
@@ -20,12 +30,9 @@ if [ ! -z "$MAHIMAHI_BASE" ]; then
       | awk '{print $2}' \
       | cut -d/ -f1
   )
-else
-  DEST_IP="0.0.0.0"
+  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
+  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
 fi
-
-jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
-jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
 
 
 if [[ ! -f "$executable" ]]; then
