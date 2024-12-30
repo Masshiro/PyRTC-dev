@@ -16,7 +16,7 @@ build-no-cache:
 
 # Run container and mount folder
 run:
-	docker run --rm -it \
+	docker run --rm --privileged -it \
 	-v $(SHARE_DIR):/app/share \
 	--name $(CONTAINER_NAME) \
 	$(DOCKER_IMAGE):$(DOCKER_TAG)

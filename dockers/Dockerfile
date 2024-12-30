@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ARG TARGETARCH
+# ARG TARGETARCH
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Vancouver
 
@@ -49,10 +49,10 @@ RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     iputils-ping \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /opt/depot_tools
-RUN git config --global --add safe.directory /opt/depot_tools
+
+# RUN git config --global --add safe.directory /opt/depot_tools
 RUN ln -s /usr/bin/python3 /usr/bin/python
-ENV PATH="/opt/depot_tools:${PATH}"
+
 RUN pip3 install gym torch protobuf==3.6.1
 
 # Create a user with no password and sudo privileges
@@ -66,6 +66,17 @@ RUN unzip -o ubuntu-18.04-vmaf.zip && chmod 774 vmaf && mv vmaf /usr/bin && rm u
 # Copy the whole project into container
 WORKDIR /app
 COPY . /app
+RUN chown -R user:user /app && chmod -R 755 /app
+
+USER user
+WORKDIR /home/user
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /app/depot_tools
+# ENV PATH="/app/depot_tools:${PATH}"
+# RUN echo "export PATH=/app/depot_tools:\$PATH" >> /root/.bashrc
+RUN echo 'export PATH=$PATH:/app/tools/tool' >> ~/.bashrc
+# RUN echo 'cd /app' >> /home/user/.bashrc
+
+WORKDIR /app
 
 # # Build AlphaRTC
 RUN cd alphartc && \
@@ -79,7 +90,9 @@ RUN cd alphartc && \
 # RUN chmod +x build.sh && ./build.sh
 # RUN bash -c '. ./build.sh'
 
-USER user
+# RUN chown -R user:user /app && \
+#     chmod -R 755 /app
+# USER user
 
 
 CMD [ "/bin/bash" ]
