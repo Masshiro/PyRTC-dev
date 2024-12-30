@@ -16,7 +16,7 @@ git config submodule.alphartc.ignore all
 git update-index --assume-unchanged .gclient_previous_sync_commits
 ```
 
-- For the first-time run: make sure `gn` tool is correctly configured: 
+- For the first-time run, you need to follow the [step here](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) to install `depot_tools`first, and then make sure `gn` tool is correctly configured: 
 ```shell
 cd alphartc
 gclient sync && mv src/* .
@@ -26,17 +26,17 @@ When it's done, verify by calling `gn --version`.
 
 - Build AlphaRTC
 ```shell
-. build_serverless.sh
+. build.sh
 ```
 
 - For the receiver client, use script to start:
 ```shell
-. serverless_receiver.sh
+. run_receiver.sh
 ```
 
 - For the sender client, use script in another shell to start:
 ```shell
-. serverless_sender.sh
+. run_sender.sh
 ```
 
 - Maintenance

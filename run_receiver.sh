@@ -4,6 +4,7 @@ target_dir="alphartc/target"
 target_lib_dir="${target_dir}/lib"
 target_bin_dir="${target_dir}/bin"
 target_pylib_dir="${target_dir}/pylib"
+output_dir="alphartc/out/Default"
 
 export LD_LIBRARY_PATH="${target_lib_dir}:$LD_LIBRARY_PATH"
 export PYTHONPATH="${target_pylib_dir}:$PYTHONPATH"
@@ -14,13 +15,13 @@ executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/receiver_pyinfer.json"
 
 
-cp -r /share/input/* "${target_bin_dir}"
-cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
-cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
+cp -r share/input/* "${target_bin_dir}"
+cp alphartc/modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
+cp alphartc/modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
 
 cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
-cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
-cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
+cp alphartc/examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
+cp alphartc/modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
 
 
 if [ ! -z "$MAHIMAHI_BASE" ]; then
