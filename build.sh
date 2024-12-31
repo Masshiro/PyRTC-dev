@@ -42,16 +42,16 @@ mkdir -p "${target_bin_dir}"
 mkdir -p "${target_pylib_dir}"
 
 
-# echo "=> Copying files and shared libraries..."
+echo "=> Copying files and shared libraries..."
 # cp -r ../share/input/* "${target_bin_dir}"
-# cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
-# cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
+cp modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
+cp modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
 
 
-# echo "=> Copying executables and Python scripts..."
-# cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
-# cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
-# cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
+echo "=> Copying executables and Python scripts..."
+cp "${output_dir}/peerconnection_serverless" "${target_bin_dir}/peerconnection_serverless.origin"
+cp examples/peerconnection/serverless/peerconnection_serverless "${target_bin_dir}"
+cp modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
 
 
 echo "=> AlphaRTC build completed."
