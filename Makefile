@@ -1,6 +1,6 @@
 DOCKER_IMAGE = pyrtc_image
 DOCKER_TAG = latest
-DOCKERFILE = dockers/Dockerfile
+DOCKERFILE = dockers/Dockerfile.nomahi
 CONTAINER_NAME = pyrtc_container
 SHARE_DIR = $(shell pwd)/share
 

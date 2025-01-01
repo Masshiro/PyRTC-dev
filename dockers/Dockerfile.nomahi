@@ -1,0 +1,28 @@
+FROM python:3.12-slim
+WORKDIR /app
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    unzip \
+    tzdata \
+    ffmpeg \
+    imagemagick \
+    iputils-ping && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir pytest numpy requests soundfile gym torch protobuf==3.6.1
+
+RUN wget https://github.com/Netflix/vmaf/releases/download/v2.1.0/ubuntu-18.04-vmaf.zip && \
+    unzip -o ubuntu-18.04-vmaf.zip && chmod 755 vmaf && mv vmaf /usr/bin && \
+    rm ubuntu-18.04-vmaf.zip
+
+COPY alphartc/target/ /app/alphartc/target/
+COPY . /app/
+
+# RUN useradd -m user && echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+#     chown -R user:user /app && chmod -R 755 /app
+
+# USER user
+
+CMD [ "/bin/bash" ]
