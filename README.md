@@ -17,7 +17,12 @@ git config submodule.alphartc.ignore all
 git update-index --assume-unchanged .gclient_previous_sync_commits
 ```
 
-Initially, you need to follow the [step here](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) to install `depot_tools`first, and then make sure `gn` tool is correctly configured by running: 
+Initially, you need to follow the [step here](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) to install `depot_tools`. And ensure some packeges has been installed in your system:
+```shell
+sudo apt install pkg-config ninja-build
+```
+
+and then make sure `gn` tool is correctly configured by running: 
 ```shell
 cd alphartc
 gclient sync && mv src/* .
