@@ -29,8 +29,8 @@ def send_recv_process(enable_mahimahi, mahi_config):
         if enable_mahimahi:
             print("Starting receiver & sender with Mahimahi enabled...")
             mahi_cmd = generate_mahimahi_command(mahi_config)
-            run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh'"
-            # run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh' -- bash -c '. ./run_sender.sh'"
+            # run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_both.sh'"
+            run_both_cmd = f"{mahi_cmd} -- bash -c '. ./run_receiver.sh' -- bash -c '. ./run_sender.sh'"
         else:
             run_both_cmd = ". ./run_both.sh"
         send_recv_process = run_script(run_both_cmd)
