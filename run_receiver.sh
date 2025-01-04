@@ -16,6 +16,9 @@ config_file="$target_bin_dir/receiver_pyinfer.json"
 
 
 cp -r share/input/* "${target_bin_dir}"
+
+[ -f share/output/webrtc.log ] && rm share/output/webrtc.log
+
 # cp alphartc/modules/third_party/onnxinfer/lib/*.so "${target_lib_dir}"
 # cp alphartc/modules/third_party/onnxinfer/lib/*.so.* "${target_lib_dir}"
 
