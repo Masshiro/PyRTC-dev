@@ -11,6 +11,8 @@ export PYTHONPATH="${target_pylib_dir}:$PYTHONPATH"
 export PATH="alphartc/target/lib:$PATH"
 export PATH="alphartc/target/bin:$PATH"
 
+cp -r share/input/* "${target_bin_dir}"
+
 executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/sender_pyinfer.json"
 

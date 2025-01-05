@@ -27,16 +27,16 @@ cp -r share/input/* "${target_bin_dir}"
 # cp alphartc/modules/third_party/cmdinfer/*.py "${target_pylib_dir}/"
 
 
-if [ ! -z "$MAHIMAHI_BASE" ]; then
-  DEST_IP=$(
-    ip addr show ingress \
-      | grep -w "inet" \
-      | awk '{print $2}' \
-      | cut -d/ -f1
-  )
-  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
-  jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
-fi
+# if [ ! -z "$MAHIMAHI_BASE" ]; then
+#   DEST_IP=$(
+#     ip addr show ingress \
+#       | grep -w "inet" \
+#       | awk '{print $2}' \
+#       | cut -d/ -f1
+#   )
+#   jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender_pyinfer.json > temp.json && mv temp.json alphartc/target/bin/sender_pyinfer.json
+#   jq --arg ip "$DEST_IP" '.serverless_connection.sender.dest_ip = $ip' alphartc/target/bin/sender.json > temp.json && mv temp.json alphartc/target/bin/sender.json
+# fi
 
 
 if [[ ! -f "$executable" ]]; then
