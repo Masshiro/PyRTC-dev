@@ -63,9 +63,15 @@ docker network create --subnet=192.168.2.0/24 rtcnet
 
 Run each docker with:
 ```shell
-docker run -it --rm --privileged -v share:/app/share --network rtcnet --ip 192.168.2.101 --name rtc_c1 pyrtc_image
+docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.101 --name rtc_c1 pyrtc_image
 
-docker run -it --rm --privileged -v share:/app/share --network rtcnet --ip 192.168.2.102 --name rtc_c2 pyrtc_image
+docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.102 --name rtc_c2 pyrtc_image
+```
+or use host network:
+```shell
+docker run -it --rm --privileged -v $(pwd)/share:/app/share --network host --name rtc_c1 pyrtc_image
+
+docker run -it --rm --privileged -v $(pwd)/share:/app/share --network host --name rtc_c2 pyrtc_image
 ```
 
 ## Requirements
