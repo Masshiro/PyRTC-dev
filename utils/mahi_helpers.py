@@ -20,25 +20,28 @@ def load_mahimahi_settings(config_path: str) -> List[Dict]:
 def generate_mahimahi_command(config_path: str) -> str:
     mahimahi_settings = load_mahimahi_settings(config_path)
     
-    loss_directive = ""
+    loss_shell = ""
     if 'loss' in mahimahi_settings and mahimahi_settings['loss'] is not None:
-        loss_directive = f"mm-loss downlink {mahimahi_settings['loss']}"
+        if mahimahi_settings['loss']['type'] == 'down':
+            loss_shell = f"mm-loss downlink {mahimahi_settings['loss']['value']} "
+        else:
+            loss_shell = f"mm-loss uplink {mahimahi_settings['loss']['value']} "
 
-    delay = mahimahi_settings.get('delay', DEFAULT_DELAY)
-    trace_file = mahimahi_settings.get('trace_file', DEFAULT_TRACE)
-    queue_size = mahimahi_settings.get('queue_size', DEFAULT_QUEUE)
-
-    command = f"mm-delay {delay} {loss_directive}".strip()
-    command += f" mm-link {project_root}/traces/{trace_file} {project_root}/traces/{trace_file} --downlink-queue=droptail --downlink-queue-args=bytes={queue_size}"
+    delay_shell = ""
+    if 'delay' in mahimahi_settings and mahimahi_settings['delay'] is not None:
+        delay_shell = f"mm-delay {mahimahi_settings['delay']} "
+    
+    link_shell = ""
+    if 'link' in mahimahi_settings and mahimahi_settings['link'] is not None:
+        if isinstance(mahimahi_settings['link'], str):
+            link_shell = f"mm-link {project_root}/traces/{mahimahi_settings['link']} {project_root}/traces/{mahimahi_settings['link']} "
+        if isinstance(mahimahi_settings['link'], list):
+            link_shell = f"mm-link {project_root}/traces/{mahimahi_settings['link'][0]} {project_root}/traces/{mahimahi_settings['link'][1]} "
+    
+    command = delay_shell + loss_shell + link_shell
+    command = command.strip()
 
     return command
-
-def config_mahimahi_ip(mahimahi_base):
-    with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "r") as f:
-        config = json.load(f)
-    config["dest_ip"] = mahimahi_base
-    with open(f"{project_root}/alphartc/target/bin/sender_pyinfer.json", "w") as f:
-        json.dump(config, f, indent=4)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,7 @@
 {
-    "delay": 80,
-    "loss": 0.1
+    "loss": {
+        "type": "down",
+        "value": 0.1
+    },
+    "link": ["ATT-LTE-driving-2016.up", "ATT-LTE-driving-2016.down"]
 }
