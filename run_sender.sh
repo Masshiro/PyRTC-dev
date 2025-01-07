@@ -5,17 +5,16 @@ target_lib_dir="${target_dir}/lib"
 target_bin_dir="${target_dir}/bin"
 target_pylib_dir="${target_dir}/pylib"
 
-
 export LD_LIBRARY_PATH="${target_lib_dir}:$LD_LIBRARY_PATH"
 export PYTHONPATH="${target_pylib_dir}:$PYTHONPATH"
 export PATH="alphartc/target/lib:$PATH"
 export PATH="alphartc/target/bin:$PATH"
 
-cp -r share/input/* "${target_bin_dir}"
-
 executable="$target_bin_dir/peerconnection_serverless"
 config_file="$target_bin_dir/sender_pyinfer.json"
 
+
+cp -r share/input/* "${target_bin_dir}"
 
 if [[ ! -f "$executable" ]]; then
     echo "Error: Executable file '$executable' not found."

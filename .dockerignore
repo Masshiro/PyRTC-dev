@@ -1,2 +1,5 @@
 alphartc/*
 !alphartc/target/
+
+share/
+evaluate/

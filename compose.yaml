@@ -1,0 +1,29 @@
+services:
+  receiver:
+    image: pyrtc_image:latest
+    privileged: true
+    volumes:
+      - ./share:/app/share
+    container_name: rtc_c2
+    command: >
+      bash -c ". run_receiver.sh"
+    networks:
+      rtcnet:
+        ipv4_address: 192.168.2.102
+  
+  sender:
+    image: pyrtc_image:latest
+    privileged: true
+    volumes:
+      - ./share:/app/share
+    container_name: rtc_c1
+    depends_on:
+      - receiver
+    command: ["/bin/bash", "entrypoint_sender.sh"]
+    networks:
+      rtcnet:
+        ipv4_address: 192.168.2.101
+
+networks:
+  rtcnet:
+    external: true

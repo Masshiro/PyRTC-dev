@@ -16,7 +16,7 @@ network:
 		echo "=> Network $(NETWORK_NAME) $(NETWORK_SUBNET) already exists."; \
 	fi
 
-setup: network
+build:
 	@if [ "$(NO_CACHE)" = "true" ]; then \
 		echo "=> Building without cache"; \
 		docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE):$(DOCKER_TAG) --no-cache .; \
@@ -24,12 +24,8 @@ setup: network
 		echo "=> Building with cache"; \
 		docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE):$(DOCKER_TAG) .; \
 	fi
-	
-build:
-	docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 
-build-no-cache:
-	docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE):$(DOCKER_TAG) --no-cache .
+setup: build network
 
 run:
 	docker run --rm --privileged -it \
