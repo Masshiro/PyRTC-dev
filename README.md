@@ -1,12 +1,23 @@
 # PyRTC-dev
 
+## Prerequisites
+
+To fully utilize this repository, make sure that Ubuntu 20.04 or 22.04 is using and following tools are installed.
+
+- Docker Engine: [official installation guide](https://docs.docker.com/engine/install/)
+- Docker Compose: [official installation guide](https://docs.docker.com/compose/install/)
+- containernet: [official installation guide](https://github.com/containernet/containernet?tab=readme-ov-file#installation)
+- Mahimahi: [official installation guide](http://mahimahi.mit.edu/#getting)
+
 ## Usage
 
-Clone this repo and initialize the submodule [AlphaRTC](https://github.com/OpenNetLab/AlphaRTC):
+### Get things ready
+
+Firstly, you may want to clone this repo and initialize the submodule [AlphaRTC](https://github.com/OpenNetLab/AlphaRTC):
 ```shell
 git clone --recurse-submodules <URL>
 ```
-or update the cloned repo
+or update the cloned repo using
 ```shell
 git submodule update --init --recursive
 ```
@@ -17,62 +28,49 @@ git config submodule.alphartc.ignore all
 git update-index --assume-unchanged .gclient_previous_sync_commits
 ```
 
-Initially, you need to follow the [step here](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) to install `depot_tools`. And ensure some packeges has been installed in your system:
-```shell
-sudo apt install pkg-config ninja-build
-```
+To build AlphaRTC and make it function, you may need to follow [the installation steps](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) to get `depot_tools`. After doing that, use the build script at the root directory of this repository:
 
-and then make sure `gn` tool is correctly configured by running: 
-```shell
-cd alphartc
-gclient sync && mv src/* .
-cd ..
-```
-When it's done, verify by calling `gn --version`.
-
-Then build the AlphaRTC using script:
 ```shell
 . build.sh
 ```
 
-For the receiver client, use script to start:
+- `pkg-config` and `ninja-build` should be installed to ensure the building process go smoothly.
+
+Then you can create docker image named `pyrtc_image:latest` by default along with the docker network which would be used in following trace-driven simulation and named `rtcnet` by default:
+
 ```shell
-. run_receiver.sh
+make setup
 ```
 
-For the sender client, use script in another shell to start:
+- or you can create image or network separately by using either `make build` or `make network`.
+
+### Trace-driven simulation
+
+Since the default subnet of `rtcnet` is 192.168.2.0/24, two containers can be started with specific IP addresses accordingly.
+
+For receiver container, run:
+
 ```shell
-. run_sender.sh
-```
-
-For updating AlphaRTC, you can do the followings:
-```shell
-cd alphartc
-git pull origin main
-
-cd ..
-git add alphartc
-git commit -m "Update alphartc to latest upstream version"
-git push origin <branch_name>
-```
-
-Create Docker network:
-```shell
-docker network create --subnet=192.168.2.0/24 rtcnet
-```
-
-Run each docker with:
-```shell
-docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.101 --name rtc_c1 pyrtc_image
-
 docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.102 --name rtc_c2 pyrtc_image
 ```
-or use host network:
-```shell
-docker run -it --rm --privileged -v $(pwd)/share:/app/share --network host --name rtc_c1 pyrtc_image
 
-docker run -it --rm --privileged -v $(pwd)/share:/app/share --network host --name rtc_c2 pyrtc_image
+- then in the bash shell of it, run `. run_receiver.sh`
+
+For sender container, run:
+
+```shell
+docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.101 --name rtc_c1 pyrtc_image
 ```
+
+- then in the bash shell of it, `CMD=$(python3 utils/mahi_helpers.py) && $CMD -- bash -c '. run_sender.sh'`
+
+Or run the sender and receiver processes automatically via Docker Compose:
+
+```shell
+docker compose up
+```
+
+- when the simulation finished, run `docker compose down`
 
 ## Requirements
 - `jq`: `sudo apt-get install jq`
