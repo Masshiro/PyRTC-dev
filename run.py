@@ -53,9 +53,10 @@ if os.path.exists(input_dir):
 shutil.copy2(f"share/input/BandwidthEstimator.py", target_bin_dir)
 
 # Remove old log file if it exists
-log_file = os.path.join(output_dir, f"webrtc.log")
-if os.path.exists(log_file):
-    os.remove(log_file)
+if args.case == 'trace':
+    log_file = os.path.join(output_dir, f"webrtc.log")
+    if os.path.exists(log_file):
+        os.remove(log_file)
 
 # Check if executable and config file exist
 if not os.path.isfile(executable):
