@@ -45,5 +45,5 @@ def generate_mahimahi_command(config_path: str) -> str:
 
 
 if __name__ == '__main__':
-    command = generate_mahimahi_command('share/input/mahimahi.json')
+    command = generate_mahimahi_command('share/input/cases/trace/mahimahi.json')
     print(command)

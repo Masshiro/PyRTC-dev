@@ -5,8 +5,7 @@ services:
     volumes:
       - ./share:/app/share
     container_name: rtc_c2
-    command: >
-      bash -c ". run_receiver.sh"
+    command: python run.py
     networks:
       rtcnet:
         ipv4_address: 192.168.2.102

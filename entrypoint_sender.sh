@@ -7,4 +7,4 @@ if [ -z "$CMD" ]; then
 fi
 
 echo "Generated mahi command: $CMD"
-exec $CMD -- bash -c '. run_sender.sh'
+exec $CMD -- python run.py --sender
