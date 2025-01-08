@@ -20,6 +20,7 @@ RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     imagemagick \
     iputils-ping \
     iperf3 \
+    iproute2 \
     net-tools \
     sudo \
     && apt-get clean && rm -rf /var/lib/apt/lists/*

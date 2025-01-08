@@ -51,6 +51,7 @@ if os.path.exists(input_dir):
         else:
             shutil.copy2(src_path, dst_path)
 shutil.copy2(f"share/input/BandwidthEstimator.py", target_bin_dir)
+shutil.copy2(f"share/input/onnx-model.onnx", target_bin_dir)
 
 # Remove old log file if it exists
 if args.case == 'trace':
