@@ -5,6 +5,7 @@ services:
     volumes:
       - ./share:/app/share
     container_name: rtc_c2
+    user: "user"
     command: python run.py
     networks:
       rtcnet:
@@ -18,6 +19,7 @@ services:
     container_name: rtc_c1
     depends_on:
       - receiver
+    user: "user"
     command: ["/bin/bash", "entrypoint_sender.sh"]
     networks:
       rtcnet:

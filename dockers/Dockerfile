@@ -39,6 +39,6 @@ COPY alphartc/target/ /app/alphartc/target/
 COPY . /app/
 RUN useradd -m user && echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN chown -R user:user /app && chmod -R 755 /app
-USER user
+# USER user
 
 CMD [ "/bin/bash" ]

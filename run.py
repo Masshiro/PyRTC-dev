@@ -54,7 +54,7 @@ shutil.copy2(f"share/input/BandwidthEstimator.py", target_bin_dir)
 shutil.copy2(f"share/input/onnx-model.onnx", target_bin_dir)
 
 # Remove old log file if it exists
-if args.case == 'trace':
+if not args.sender:
     log_file = os.path.join(output_dir, f"webrtc.log")
     if os.path.exists(log_file):
         os.remove(log_file)
