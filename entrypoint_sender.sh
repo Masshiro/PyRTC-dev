@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CMD=$(python3 /app/utils/mahi_helpers.py)
+CMD=$(python3 utils/mahi_helpers.py)
 if [ -z "$CMD" ]; then
   echo "Error: CMD is empty!"
   exit 1
