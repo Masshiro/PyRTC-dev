@@ -6,7 +6,7 @@ To fully utilize this repository, make sure that Ubuntu 20.04 or 22.04 is using 
 
 - Docker Engine: [official installation guide](https://docs.docker.com/engine/install/)
 - Docker Compose: [official installation guide](https://docs.docker.com/compose/install/)
-- containernet: [official installation guide](https://github.com/containernet/containernet?tab=readme-ov-file#installation)
+- Containernet: [official installation guide](https://github.com/containernet/containernet?tab=readme-ov-file#installation)
 - Mahimahi: [official installation guide](http://mahimahi.mit.edu/#getting)
 
 ## Usage
@@ -54,7 +54,7 @@ For receiver container, run:
 docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.102 --name rtc_c2 pyrtc_image
 ```
 
-- then in the bash shell of it, run `. run_receiver.sh`
+- then in the bash shell of it, run `python run.py`
 
 For sender container, run:
 
@@ -62,9 +62,9 @@ For sender container, run:
 docker run -it --rm --privileged -v $(pwd)/share:/app/share --network rtcnet --ip 192.168.2.101 --name rtc_c1 pyrtc_image
 ```
 
-- then in the bash shell of it, `CMD=$(python3 utils/mahi_helpers.py) && $CMD -- bash -c '. run_sender.sh'`
+- then in the bash shell of it, `CMD=$(python3 utils/mahi_helpers.py) && $CMD -- python run.py --sender`
 
-Or run the sender and receiver processes automatically via Docker Compose:
+Or you can run the sender and receiver processes automatically via Docker Compose:
 
 ```shell
 docker compose up
@@ -72,8 +72,21 @@ docker compose up
 
 - when the simulation finished, run `docker compose down`
 
-## Requirements
-- `jq`: `sudo apt-get install jq`
+
+### Topology-based simulation
+In addtion to the trace-driven simulation, we further construct two kind of topologies for the tests, which are dumbbell and parking-lot, respectively. They are formed using [Containernet](https://containernet.github.io/), a extension of the [Mininet](https://mininet.org/), with traditional nodes being replaced by Docker containers. The details of both topologies' defination can be found at [former work's repository](https://github.com/Zhiming-Huang/luc).
+
+Suppose containernet has been installed following [bare-metal option](https://github.com/containernet/containernet?tab=readme-ov-file#option-1-bare-metal-installation), you may first start the virtual Python environment in which containernet was maintained:
+```shell
+source path/to/your/venv
+```
+then run either simulation by:
+- ```shell
+  sudo -E env PATH=$PATH python topo_dumbbell.py
+    ```
+- ```shell
+  sudo -E env PATH=$PATH python topo_parkinglot.py
+    ```
 
 
 ## Resources

@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description="Run Sender or Receiver with specif
 parser.add_argument('--sender', action='store_true', help='Sender Flag')
 parser.add_argument('--case', '-C', type=str, help='Use case', 
                     choices=['trace', 'dumbbell', 'parkinglot'], default='trace')
-parser.add_argument('--index', '-I',
+parser.add_argument('--index', '-I', default=None, 
                     type=int, help='Index of sender and receiver', choices=[1, 2, 3])
 
 args = parser.parse_args()
@@ -55,7 +55,10 @@ shutil.copy2(f"share/input/onnx-model.onnx", target_bin_dir)
 
 # Remove old log file if it exists
 if not args.sender:
-    log_file = os.path.join(output_dir, f"webrtc.log")
+    if args.index == None:
+        log_file = os.path.join(output_dir, f"webrtc.log")
+    else:
+        log_file = os.path.join(output_dir, f"webrtc{args.index}.log")
     if os.path.exists(log_file):
         os.remove(log_file)
 
