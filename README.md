@@ -78,7 +78,7 @@ In addtion to the trace-driven simulation, we further construct two kind of topo
 
 Suppose containernet has been installed following [bare-metal option](https://github.com/containernet/containernet?tab=readme-ov-file#option-1-bare-metal-installation), you may first start the virtual Python environment in which containernet was maintained:
 ```shell
-source path/to/your/venv
+source path/to/your/venv/bin/activate
 ```
 then run either simulation by:
 - ```shell
