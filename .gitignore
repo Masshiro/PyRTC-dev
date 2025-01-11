@@ -2,20 +2,25 @@ __pycache__
 
 .gclient*
 
+share/input/testmedia/*y4m
+
 share/output/dumbbell/*.wav
 share/output/dumbbell/*.yuv
+share/output/dumbbell/*.y4m
 share/output/dumbbell/*.log
 share/output/dumbbell/scores*
 share/output/dumbbell/bwe*
 
 share/output/parkinglot/*.wav
 share/output/parkinglot/*.yuv
+share/output/parkinglot/*.y4m
 share/output/parkinglot/*.log
 share/output/parkinglot/scores*
 share/output/parkinglot/bwe*
 
 share/output/trace/*.wav
 share/output/trace/*.yuv
+share/output/trace/*.y4m
 share/output/trace/*.log
 share/output/trace/scores*
 share/output/trace/bwe*

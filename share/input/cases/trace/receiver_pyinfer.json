@@ -1,6 +1,6 @@
 {
     "serverless_connection": {
-        "autoclose": 20,
+        "autoclose": 40,
         "sender": {
             "enabled": false
         },
@@ -20,10 +20,10 @@
         },
         "video_file": {
             "enabled": false,
-            "height": 240,
-            "width": 320,
-            "fps": 10,
-            "file_path": "share/input/testmedia/test.yuv"
+            "height": 720,
+            "width": 1280,
+            "fps": 60,
+            "file_path": "share/input/testmedia/test.y4m"
         }
     },
     "audio_source": {
@@ -41,10 +41,10 @@
             "file_path": "share/output/trace/outaudio.wav"
         },
         "video": {
-            "width": 320,
-            "height": 240,
-            "fps": 10,
-            "file_path": "share/output/trace/outvideo.yuv"
+            "width": 720,
+            "height": 1280,
+            "fps": 60,
+            "file_path": "share/output/trace/outvideo.y4m"
         }
     },
     "logging": {
