@@ -65,9 +65,9 @@ elif args.algorithm == "HRCC":
 # Remove old log file if it exists
 if not args.sender:
     if args.index == None:
-        log_file = os.path.join(output_dir, f"webrtc.log")
+        log_file = os.path.join(output_dir, f"webrtc_{args.algorithm}.log")
     else:
-        log_file = os.path.join(output_dir, f"webrtc{args.index}.log")
+        log_file = os.path.join(output_dir, f"webrtc{args.index}_{args.algorithm}.log")
     if os.path.exists(log_file):
         os.remove(log_file)
 
@@ -88,3 +88,13 @@ try:
 except subprocess.CalledProcessError as e:
     print(f"Error during execution: {e}")
     exit(1)
+
+if not args.sender:    
+    if args.index == None:
+        os.rename(
+            os.path.join(output_dir, f"webrtc.log"), 
+            os.path.join(output_dir, f"webrtc_{args.algorithm}.log"))
+    else:
+        os.rename(
+            os.path.join(output_dir, f"webrtc{args.index}.log"), 
+            os.path.join(output_dir, f"webrtc{args.index}_{args.algorithm}.log"))
