@@ -21,7 +21,7 @@
         "video_file": {
             "enabled": true,
             "height": 720,
-            "width": 1680,
+            "width": 1280,
             "fps": 60,
             "file_path": "share/input/testmedia/test.y4m"
         }
