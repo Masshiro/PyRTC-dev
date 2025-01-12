@@ -8,4 +8,4 @@ fi
 
 echo "Generated mahi command: $CMD"
 echo "user: $whoami"
-exec $CMD -- python run.py --sender
+exec $CMD -- python run.py --sender -A "HRCC"

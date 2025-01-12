@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 import subprocess
 import argparse
@@ -10,6 +11,8 @@ parser.add_argument('--case', '-C', type=str, help='Use case',
                     choices=['trace', 'dumbbell', 'parkinglot'], default='trace')
 parser.add_argument('--index', '-I', default=None, 
                     type=int, help='Index of sender and receiver', choices=[1, 2, 3])
+parser.add_argument('--algorithm', '-A', default="dummy", 
+                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC"])
 
 args = parser.parse_args()
 
@@ -50,8 +53,14 @@ if os.path.exists(input_dir):
             shutil.copytree(src_path, dst_path, dirs_exist_ok=True)
         else:
             shutil.copy2(src_path, dst_path)
-shutil.copy2(f"share/input/BandwidthEstimator.py", target_bin_dir)
-shutil.copy2(f"share/input/onnx-model.onnx", target_bin_dir)
+
+# if not args.sender:
+if target_bin_dir not in sys.path:
+        sys.path.append(target_bin_dir)
+if args.algorithm == "dummy":
+    shutil.copytree(f"share/input/ccalgs/dummy", target_bin_dir, dirs_exist_ok=True)
+elif args.algorithm == "HRCC":
+    shutil.copytree(f"share/input/ccalgs/HRCC", target_bin_dir, dirs_exist_ok=True)
 
 # Remove old log file if it exists
 if not args.sender:
