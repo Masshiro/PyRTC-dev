@@ -6,7 +6,7 @@ services:
       - ./share:/app/share
     container_name: rtc_c2
     user: "user"
-    command: python run.py -A "HRCC"
+    command: python run.py -A "dummy"
     networks:
       rtcnet:
         ipv4_address: 192.168.2.102
@@ -20,6 +20,8 @@ services:
     depends_on:
       - receiver
     user: "user"
+    environment:
+      ARG_A: "dummy"
     command: ["/bin/bash", "entrypoint_sender.sh"]
     networks:
       rtcnet:

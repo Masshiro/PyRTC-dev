@@ -1,7 +1,3 @@
 {
-    "loss": {
-        "type": "down",
-        "value": 0.1
-    },
-    "link": ["ATT-LTE-driving-2016.up", "ATT-LTE-driving-2016.down"]
+    "link": ["ATT-LTE-driving.up", "ATT-LTE-driving.down"]
 }

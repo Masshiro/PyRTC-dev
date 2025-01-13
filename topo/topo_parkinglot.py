@@ -6,6 +6,7 @@ from mininet.link import TCLink
 from mininet.cli import CLI
 from time import sleep
 import os
+import argparse
 
 class ParkinglotTopo:
     def __init__(self):
@@ -53,13 +54,13 @@ class ParkinglotTopo:
         receiver2 = self.net.get('h3')
         receiver3 = self.net.get('h5')
         
-        receiver1.cmd('python run.py -C "parkinglot" -I 1 &')
-        receiver2.cmd('python run.py -C "parkinglot" -I 2 &')
-        receiver3.cmd('python run.py -C "parkinglot" -I 3 &')
+        receiver1.cmd('python run.py -C "parkinglot" -I 1 -A alg &')
+        receiver2.cmd('python run.py -C "parkinglot" -I 2 -A alg &')
+        receiver3.cmd('python run.py -C "parkinglot" -I 3 -A alg &')
         sleep(5)
-        sender1.cmd('python run.py --sender -C "parkinglot" -I 1 &')
-        sender2.cmd('python run.py --sender -C "parkinglot" -I 2 &')
-        sender3.cmd('python run.py --sender -C "parkinglot" -I 3 &')
+        sender1.cmd('python run.py --sender -C "parkinglot" -I 1 -A alg &')
+        sender2.cmd('python run.py --sender -C "parkinglot" -I 2 -A alg &')
+        sender3.cmd('python run.py --sender -C "parkinglot" -I 3 -A alg &')
 
         print("=> Transferring video & audio...")
         sender1.cmd('wait')
@@ -70,5 +71,10 @@ class ParkinglotTopo:
         self.net.stop()
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--algorithm', '-A', default="dummy", 
+                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC"])
+    args = parser.parse_args()
+
     topo = ParkinglotTopo()
-    topo.run()
+    topo.run(args.algorithm)

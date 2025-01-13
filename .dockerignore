@@ -3,3 +3,7 @@ alphartc/*
 
 share/
 evaluate/
+topo/
+archive/
+
+compose.yaml

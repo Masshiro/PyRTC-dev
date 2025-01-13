@@ -73,3 +73,76 @@ class NetEvalMethodNormal(NetEvalMethod):
                             100 * 0.3 * (1 - avg_loss_rate)
 
         return network_score
+
+
+class NetEvalMethodExtension(NetEvalMethod):
+    def __init__(self, max_delay=400, ground_recv_rate=500):
+        super(NetEvalMethodExtension, self).__init__()
+        self.eval_name = "extension"
+        self.max_delay = max_delay
+        self.ground_recv_rate = ground_recv_rate
+    
+    def eval(self, dst_net_info: NetInfo):
+        net_data = dst_net_info.net_data
+        ssrc_info = {}
+        time_nbytes = {}
+
+        loss_count = 0
+        self.last_seqNo = {}
+        for item in net_data:
+            ssrc = item["packetInfo"]["header"]["ssrc"]
+            sequence_number = item["packetInfo"]["header"]["sequenceNumber"]
+            tmp_delay = item["packetInfo"]["arrivalTimeMs"] - item["packetInfo"]["header"]["sendTimestamp"]
+            timestamp = item["packetInfo"]["arrivalTimeMs"]
+            if (ssrc not in ssrc_info):
+                ssrc_info[ssrc] = {
+                    "time_delta" : -tmp_delay,
+                    "delay_list" : [],
+                    "received_nbytes" : 0,
+                    "start_recv_time" : item["packetInfo"]["arrivalTimeMs"],
+                    "avg_recv_rate" : 0,
+                    "packet_cnt": 0
+                }
+            
+            if (timestamp not in time_nbytes):
+                time_nbytes[timestamp] = item["packetInfo"]["payloadSize"]
+            else:
+                time_nbytes[timestamp] += item["packetInfo"]["payloadSize"]
+
+            if ssrc in self.last_seqNo:
+                loss_count += max(0, sequence_number - self.last_seqNo[ssrc] - 1)
+            self.last_seqNo[ssrc] = sequence_number
+
+            ssrc_info[ssrc]["delay_list"].append(ssrc_info[ssrc]["time_delta"] + tmp_delay)
+            ssrc_info[ssrc]["received_nbytes"] += item["packetInfo"]["payloadSize"]
+            if item["packetInfo"]["arrivalTimeMs"] != ssrc_info[ssrc]["start_recv_time"]:
+                ssrc_info[ssrc]["avg_recv_rate"] = ssrc_info[ssrc]["received_nbytes"] / (item["packetInfo"]["arrivalTimeMs"] - ssrc_info[ssrc]["start_recv_time"])
+        
+        for ssrc in ssrc_info:
+            min_delay = min(ssrc_info[ssrc]["delay_list"])
+            ssrc_info[ssrc]["scale_delay_list"] = [min(self.max_delay, delay) for delay in ssrc_info[ssrc]["delay_list"]]
+        
+        all_self_inflicted_delays = []
+        all_delay_pencentile_95 = []
+        for ssrc in ssrc_info:
+            min_delay = min(ssrc_info[ssrc]["scale_delay_list"])
+            self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["scale_delay_list"]]
+            all_self_inflicted_delays.extend(self_inflicted_delay)
+            all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["scale_delay_list"], 95))
+            
+            recv_rate_list = [ssrc_info[ssrc]["avg_recv_rate"]*8. /1000. for ssrc in ssrc_info if ssrc_info[ssrc]["avg_recv_rate"] > 0]
+
+        time = list(time_nbytes.keys())
+        nbytes = list(time_nbytes.values())
+        avg_good_put = (np.sum(nbytes)*8/1000) / (time[-1]-time[0])
+        # all_self_inflicted_delays = []
+        # all_delay_pencentile_95 = []
+        # for ssrc in ssrc_info:
+        #     min_delay = min(ssrc_info[ssrc]["delay_list"])
+        #     self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["delay_list"]]
+        #     all_self_inflicted_delays.extend(self_inflicted_delay)
+        #     all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["delay_list"], 95))
+            
+        #     recv_rate_list = [ssrc_info[ssrc]["avg_recv_rate"]*8. /1000. for ssrc in ssrc_info if ssrc_info[ssrc]["avg_recv_rate"] > 0]
+
+        return (time_nbytes, np.mean(all_self_inflicted_delays), np.mean(all_delay_pencentile_95),  np.sum(recv_rate_list), loss_count / (loss_count + len(net_data)))

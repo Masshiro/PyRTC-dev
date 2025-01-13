@@ -3,6 +3,7 @@ import sys
 import shutil
 import subprocess
 import argparse
+import json
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Run Sender or Receiver with specific Scenario.")
@@ -28,19 +29,6 @@ os.environ["PYTHONPATH"] = f"{target_pylib_dir}:{os.environ.get('PYTHONPATH', ''
 os.environ["PATH"] = f"{target_lib_dir}:{os.environ.get('PATH', '')}"
 os.environ["PATH"] = f"{target_bin_dir}:{os.environ.get('PATH', '')}"
 
-# Define executable and config file paths
-executable = os.path.join(target_bin_dir, "peerconnection_serverless")
-if args.sender:
-    if args.case == 'trace':
-        config_file = os.path.join(target_bin_dir, "sender_pyinfer.json")
-    else:
-        config_file = os.path.join(target_bin_dir, f"sender_pyinfer{args.index}.json")
-else:
-    if args.case == 'trace':
-        config_file = os.path.join(target_bin_dir, "receiver_pyinfer.json")
-    else:
-        config_file = os.path.join(target_bin_dir, f"receiver_pyinfer{args.index}.json")
-
 # Copy input files
 input_dir = f"share/input/cases/{args.case}"
 output_dir = f"share/output/{args.case}"
@@ -53,6 +41,29 @@ if os.path.exists(input_dir):
             shutil.copytree(src_path, dst_path, dirs_exist_ok=True)
         else:
             shutil.copy2(src_path, dst_path)
+
+# Define executable and config file paths
+executable = os.path.join(target_bin_dir, "peerconnection_serverless")
+if args.sender:
+    if args.case == 'trace':
+        config_file = os.path.join(target_bin_dir, "sender_pyinfer.json")
+    else:
+        config_file = os.path.join(target_bin_dir, f"sender_pyinfer{args.index}.json")
+else:
+    if args.case == 'trace':
+        config_file = os.path.join(target_bin_dir, "receiver_pyinfer.json")
+        with open(config_file, "r", encoding="utf-8") as file:
+            config_data = json.load(file)
+        config_data["logging"]["log_output_path"] = f"share/output/{args.case}/webrtc_{args.algorithm}.log"
+        with open(config_file, "w", encoding="utf-8") as file:
+            json.dump(config_data, file)
+    else:
+        config_file = os.path.join(target_bin_dir, f"receiver_pyinfer{args.index}.json")
+        with open(config_file, "r", encoding="utf-8") as file:
+            config_data = json.load(file)
+        config_data["logging"]["log_output_path"] = f"share/output/{args.case}/webrtc{args.index}_{args.algorithm}.log"
+        with open(config_file, "w", encoding="utf-8") as file:
+            json.dump(config_data, file)
 
 # if not args.sender:
 if target_bin_dir not in sys.path:
@@ -88,13 +99,3 @@ try:
 except subprocess.CalledProcessError as e:
     print(f"Error during execution: {e}")
     exit(1)
-
-if not args.sender:    
-    if args.index == None:
-        os.rename(
-            os.path.join(output_dir, f"webrtc.log"), 
-            os.path.join(output_dir, f"webrtc_{args.algorithm}.log"))
-    else:
-        os.rename(
-            os.path.join(output_dir, f"webrtc{args.index}.log"), 
-            os.path.join(output_dir, f"webrtc{args.index}_{args.algorithm}.log"))

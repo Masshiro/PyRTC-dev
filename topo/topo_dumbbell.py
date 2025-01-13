@@ -6,6 +6,7 @@ from mininet.link import TCLink
 from mininet.cli import CLI
 from time import sleep
 import os
+import argparse
 
 class DumbbellTopo:
     def __init__(self):
@@ -35,7 +36,7 @@ class DumbbellTopo:
         self.net.addLink(receiver1, switch2, bw=10, delay='10ms', use_htb=True)
         self.net.addLink(receiver2, switch2, bw=10, delay='10ms', use_htb=True)
 
-    def run(self):
+    def run(self, alg):
         print("=> Starting network...")
         self.net.start()
 
@@ -44,11 +45,11 @@ class DumbbellTopo:
         receiver1 = self.net.get('h3')
         receiver2 = self.net.get('h4')
         
-        receiver1.cmd('python run.py -C "dumbbell" -I 1 &') #> share/output/dumbbell/r1.log 2>&1
-        receiver2.cmd('python run.py -C "dumbbell" -I 2 &')
+        receiver1.cmd('python run.py -C "dumbbell" -I 1 -A alg &') #> share/output/dumbbell/r1.log 2>&1
+        receiver2.cmd('python run.py -C "dumbbell" -I 2 -A alg &')
         sleep(3)
-        sender1.cmd('python run.py --sender -C "dumbbell" -I 1 &')
-        sender2.cmd('python run.py --sender -C "dumbbell" -I 2 &')
+        sender1.cmd('python run.py --sender -C "dumbbell" -I 1 -A alg &')
+        sender2.cmd('python run.py --sender -C "dumbbell" -I 2 -A alg &')
         
         print("=> Transferring video & audio...")
         sender1.cmd('wait')
@@ -58,5 +59,10 @@ class DumbbellTopo:
         self.net.stop()
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--algorithm', '-A', default="dummy", 
+                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC"])
+    args = parser.parse_args()
+
     topo = DumbbellTopo()
-    topo.run()
+    topo.run(args.algorithm)
