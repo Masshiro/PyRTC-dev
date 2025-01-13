@@ -41,8 +41,8 @@
             "file_path": "share/output/trace/outaudio.wav"
         },
         "video": {
-            "width": 720,
-            "height": 1280,
+            "height": 720,
+            "width": 1280,
             "fps": 60,
             "file_path": "share/output/trace/outvideo.y4m"
         }
