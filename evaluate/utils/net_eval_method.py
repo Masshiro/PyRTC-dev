@@ -122,27 +122,28 @@ class NetEvalMethodExtension(NetEvalMethod):
             min_delay = min(ssrc_info[ssrc]["delay_list"])
             ssrc_info[ssrc]["scale_delay_list"] = [min(self.max_delay, delay) for delay in ssrc_info[ssrc]["delay_list"]]
         
-        all_self_inflicted_delays = []
-        all_delay_pencentile_95 = []
-        for ssrc in ssrc_info:
-            min_delay = min(ssrc_info[ssrc]["scale_delay_list"])
-            self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["scale_delay_list"]]
-            all_self_inflicted_delays.extend(self_inflicted_delay)
-            all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["scale_delay_list"], 95))
-            
-            recv_rate_list = [ssrc_info[ssrc]["avg_recv_rate"]*8. /1000. for ssrc in ssrc_info if ssrc_info[ssrc]["avg_recv_rate"] > 0]
-
-        time = list(time_nbytes.keys())
-        nbytes = list(time_nbytes.values())
-        avg_good_put = (np.sum(nbytes)*8/1000) / (time[-1]-time[0])
         # all_self_inflicted_delays = []
         # all_delay_pencentile_95 = []
         # for ssrc in ssrc_info:
-        #     min_delay = min(ssrc_info[ssrc]["delay_list"])
-        #     self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["delay_list"]]
+        #     min_delay = min(ssrc_info[ssrc]["scale_delay_list"])
+        #     self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["scale_delay_list"]]
         #     all_self_inflicted_delays.extend(self_inflicted_delay)
-        #     all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["delay_list"], 95))
+        #     all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["scale_delay_list"], 95))
             
         #     recv_rate_list = [ssrc_info[ssrc]["avg_recv_rate"]*8. /1000. for ssrc in ssrc_info if ssrc_info[ssrc]["avg_recv_rate"] > 0]
+
+        # time = list(time_nbytes.keys())
+        # nbytes = list(time_nbytes.values())
+        # avg_good_put = (np.sum(nbytes)*8/1000) / (time[-1]-time[0])
+        
+        all_self_inflicted_delays = []
+        all_delay_pencentile_95 = []
+        for ssrc in ssrc_info:
+            min_delay = min(ssrc_info[ssrc]["delay_list"])
+            self_inflicted_delay = [delay - min_delay for delay in ssrc_info[ssrc]["delay_list"]]
+            all_self_inflicted_delays.extend(self_inflicted_delay)
+            all_delay_pencentile_95.append(np.percentile(ssrc_info[ssrc]["delay_list"], 95))
+            
+            recv_rate_list = [ssrc_info[ssrc]["avg_recv_rate"]*8. /1000. for ssrc in ssrc_info if ssrc_info[ssrc]["avg_recv_rate"] > 0]
 
         return (time_nbytes, np.mean(all_self_inflicted_delays), np.mean(all_delay_pencentile_95),  np.sum(recv_rate_list), loss_count / (loss_count + len(net_data)))

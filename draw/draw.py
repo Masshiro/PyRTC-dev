@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import argparse
 import json
 
-def draw_goodput(time_nbytes_list: list, save_file_name="hrcc_dummy_put.png", min_gap=500, duration=60):
+def draw_goodput(time_nbytes_list: list, algs_list: list, save_file_name="hrcc_dummy_put.png", min_gap=500, duration=60):
     plt.figure()
     for idx, time_nbytes in enumerate(time_nbytes_list):
         timestamps = list(time_nbytes.keys())
@@ -37,14 +37,14 @@ def draw_goodput(time_nbytes_list: list, save_file_name="hrcc_dummy_put.png", mi
                 prev_time = rel_stamps[i]
                 goodput_gap = 0
         
-        plt.plot(goodput_time, goodput_list, label=algs_list[idx])
+        plt.plot(goodput_time, goodput_list,  label=algs_list[idx])
     
     xticks = np.arange(0, duration*1000+1, 10000)
     xtick_labels = (xticks / 1000).astype(int)
     plt.xticks(xticks, xtick_labels)
     plt.ylabel("Goodput (Mbps)")
     plt.xlabel("Time (s)")
-    plt.legend()
+    plt.legend(loc='upper left')
     plt.savefig(f"share/output/figures/{save_file_name}", bbox_inches='tight')
     
     return timestamps, rel_stamps
@@ -102,10 +102,7 @@ if __name__ == "__main__":
     print(f'good put: ', result2[3])
     print(f'loss rate: ', result2[4])
 
-    time_nbytes_list = [result1[0], result2[0]]
-    algs_list = ["HRCC", "dummy"]
-
-    draw_goodput(time_nbytes_list, "hrcc_dummy_put_taxi.png")
+    draw_goodput([result1[0], result2[0]], ["HRCC", "dummy"], "hrcc_dummy_put_taxi.png")
 
     ########################################################
 
