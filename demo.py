@@ -3,12 +3,13 @@ import argparse
 import subprocess
 import json
 from collections import defaultdict
+import time
 
 from utils.ssim import calculate_video_ssim
 from evaluate.utils.net_info import NetInfo
 from evaluate.utils.net_eval_method import NetEvalMethodExtension
 from evaluate.eval_network import init_network_argparse, get_network_score
-from draw.draw import draw_goodput
+from utils.draw import *
 
 TRACE_FILES = {
     'att16': ["ATT-LTE-driving-2016.down", "ATT-LTE-driving-2016.down"],
@@ -51,7 +52,7 @@ def run_one_scenario(algorithm: str, trace: str):
     command = ["docker", "compose", "up"]
     print(f"Executing: {command} with algorithm: {algorithm}")
     subprocess.run(command, check=True)
-
+    time.sleep(3)
     command = ["docker", "compose", "down"]
     print(f"Executing: {command} with algorithm: {algorithm}")
     subprocess.run(command, check=True)
@@ -99,11 +100,17 @@ def demo(times=5):
         for i in range(times):
             for alg in ALGORITHMS:
                 run_one_scenario(alg, trace)
-            evaluate_one_scenario(trace, i)
             print(f"({(t_idx)*times+i}/{times*N_TRACES}): Finished {i+1} times of {trace} trace")
+            evaluate_one_scenario(trace, i)
     with open("share/output/trace/demo_results.json", "w", encoding='utf-8') as resf:
         json.dump(RESULTS, resf)
 
+def visual_demo(json_file):
+    for alg in ["dummy", "HRCC", "GCC"]:
+        draw_metrics_from_json_traces(json_file, alg, "delay1", "goodput", ("Self-Inflicted Delay (ms)", "Average Goodput (Mbps)"))
+        draw_metrics_from_json_traces(json_file, alg, "delay2", "goodput", ("95th Percentile One-Way Delay (ms)", "Average Goodput (Mbps)"))
+
+    draw_combined_scores_from_json_traces(json_file)
 
  
 if __name__ == '__main__':
@@ -111,5 +118,5 @@ if __name__ == '__main__':
     # parser.add_argument('--algorithm', '-A', default="all", help='The algorithm to use', choices=["dummy", "HRCC", "GCC", "all"])
     # args = parser.parse_args()
 
-    demo(3)
-    # evaluate_one_scenario("taxi", 0)
+    # demo(3)
+    visual_demo("share/output/trace/demo_results.json")
