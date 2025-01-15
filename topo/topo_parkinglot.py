@@ -8,6 +8,8 @@ from time import sleep
 import os
 import argparse
 
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 class ParkinglotTopo:
     def __init__(self):
         self.net = Containernet(controller=Controller, link=TCLink)
@@ -28,12 +30,12 @@ class ParkinglotTopo:
         self.net.addLink(switch2, switch3, bw=10, delay='10ms', loss=0, use_htb=True)
 
         # Add hosts and connect to switches
-        sender1 = self.net.addDocker('h1', ip='192.168.4.101', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
-        sender2 = self.net.addDocker('h2', ip='192.168.4.102', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
-        sender3 = self.net.addDocker('h4', ip='192.168.4.104', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
-        receiver1 = self.net.addDocker('h6', ip='192.168.4.106', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
-        receiver2 = self.net.addDocker('h3', ip='192.168.4.103', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
-        receiver3 = self.net.addDocker('h5', ip='192.168.4.105', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(os.getcwd())])
+        sender1 = self.net.addDocker('h1', ip='192.168.4.101', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
+        sender2 = self.net.addDocker('h2', ip='192.168.4.102', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
+        sender3 = self.net.addDocker('h4', ip='192.168.4.104', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
+        receiver1 = self.net.addDocker('h6', ip='192.168.4.106', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
+        receiver2 = self.net.addDocker('h3', ip='192.168.4.103', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
+        receiver3 = self.net.addDocker('h5', ip='192.168.4.105', dimage='pyrtc_image:latest', volumes=["{}/share:/app/share".format(project_root)])
 
         self.net.addLink(sender1, switch1, bw=10, delay='5ms', use_htb=True)
         self.net.addLink(sender2, switch1, bw=10, delay='10ms', use_htb=True)
@@ -43,7 +45,7 @@ class ParkinglotTopo:
         self.net.addLink(receiver3, switch3, bw=10, delay='10ms', use_htb=True)
         
 
-    def run(self):
+    def run(self, alg):
         print("=> Starting network...")
         self.net.start()
 
@@ -54,13 +56,13 @@ class ParkinglotTopo:
         receiver2 = self.net.get('h3')
         receiver3 = self.net.get('h5')
         
-        receiver1.cmd('python run.py -C "parkinglot" -I 1 -A alg &')
-        receiver2.cmd('python run.py -C "parkinglot" -I 2 -A alg &')
-        receiver3.cmd('python run.py -C "parkinglot" -I 3 -A alg &')
+        receiver1.cmd(f'python run.py -C "parkinglot" -I 1 -A {alg} &')
+        receiver2.cmd(f'python run.py -C "parkinglot" -I 2 -A {alg} &')
+        receiver3.cmd(f'python run.py -C "parkinglot" -I 3 -A {alg} &')
         sleep(5)
-        sender1.cmd('python run.py --sender -C "parkinglot" -I 1 -A alg &')
-        sender2.cmd('python run.py --sender -C "parkinglot" -I 2 -A alg &')
-        sender3.cmd('python run.py --sender -C "parkinglot" -I 3 -A alg &')
+        sender1.cmd(f'python run.py --sender -C "parkinglot" -I 1 -A {alg} &')
+        sender2.cmd(f'python run.py --sender -C "parkinglot" -I 2 -A {alg} &')
+        sender3.cmd(f'python run.py --sender -C "parkinglot" -I 3 -A {alg} &')
 
         print("=> Transferring video & audio...")
         sender1.cmd('wait')
@@ -73,7 +75,7 @@ class ParkinglotTopo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--algorithm', '-A', default="dummy", 
-                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC"])
+                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC", "GCC"])
     args = parser.parse_args()
 
     topo = ParkinglotTopo()

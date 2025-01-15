@@ -3,12 +3,8 @@ import os
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
 
-from evaluate.utils.net_info import NetInfo
-from evaluate.utils.net_eval_method import NetEvalMethodExtension
-
 from evaluate.eval_video import init_video_argparse, get_video_score
 from evaluate.eval_network import init_network_argparse, get_network_score
-
 from utils.ssim import calculate_video_ssim
 
 import numpy as np
@@ -17,7 +13,7 @@ import argparse
 import json
 from itertools import cycle
 
-def draw_goodput(time_nbytes_list: list, algs_list: list, save_file_name="hrcc_dummy_put.png", min_gap=500, duration=60):
+def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodput.png", min_gap=500, duration=60):
     plt.figure()
     for idx, time_nbytes in enumerate(time_nbytes_list):
         timestamps = list(time_nbytes.keys())
@@ -38,7 +34,7 @@ def draw_goodput(time_nbytes_list: list, algs_list: list, save_file_name="hrcc_d
                 prev_time = rel_stamps[i]
                 goodput_gap = 0
         
-        plt.plot(goodput_time, goodput_list,  label=algs_list[idx])
+        plt.plot(goodput_time, goodput_list,  label=label_list[idx])
     
     xticks = np.arange(0, duration*1000+1, 10000)
     xtick_labels = (xticks / 1000).astype(int)
@@ -150,9 +146,8 @@ def draw_combined_scores_from_json_traces(json_file):
     plt.legend(title="Algorithm", loc="upper right")
     plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-    # plt.tight_layout()
-    # plt.show()
     plt.savefig(f"share/output/figures/trace_scores.png", bbox_inches='tight')
+
 
 if __name__ == "__main__":
     ########################################################

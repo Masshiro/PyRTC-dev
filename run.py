@@ -63,7 +63,7 @@ else:
         with open(config_file, "r", encoding="utf-8") as file:
             config_data = json.load(file)
         config_data["logging"]["log_output_path"] = f"share/output/{args.case}/webrtc{args.index}_{args.algorithm}.log"
-        config_data["save_to_file"]["video"]["file_path"] = f"share/output/{args.case}/outvideo{args.index}_{args.algorithm}.y4m"
+        config_data["save_to_file"]["video"]["file_path"] = f"share/output/{args.case}/outvideo{args.index}_{args.algorithm}.yuv"
         with open(config_file, "w", encoding="utf-8") as file:
             json.dump(config_data, file)
 
