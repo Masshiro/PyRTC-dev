@@ -82,10 +82,10 @@ source path/to/your/venv/bin/activate
 ```
 then run either simulation by:
 - ```shell
-  sudo -E env PATH=$PATH python topo_dumbbell.py
+  sudo -E env PATH=$PATH python topo/topo_dumbbell.py
     ```
 - ```shell
-  sudo -E env PATH=$PATH python topo_parkinglot.py
+  sudo -E env PATH=$PATH python topo/topo_parkinglot.py
     ```
 
 

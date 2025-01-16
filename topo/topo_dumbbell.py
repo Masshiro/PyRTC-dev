@@ -72,10 +72,15 @@ class DumbbellTopo:
         self.net.stop()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--algorithm', '-A', default="dummy", 
-                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC", "GCC"])
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--algorithm', '-A', default="dummy", 
+    #                 type=str, help='Bandwidth estimator', choices=["dummy", "HRCC", "GCC"])
+    # args = parser.parse_args()
 
-    topo = DumbbellTopo()
-    topo.run(args.algorithm)
+    # topo = DumbbellTopo()
+    # topo.run(args.algorithm)
+
+
+    for alg in ["dummy", "HRCC", "GCC"]:
+        topo = DumbbellTopo()
+        topo.run(alg)

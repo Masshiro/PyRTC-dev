@@ -27,7 +27,7 @@ def visual_one_topo(max_index:int, topo: str):
             net_parsers.append(NetInfo(f"share/output/{topo}/webrtc{i}_{algorithm}.log"))
             net_parsers[i-1].parse_net_log()
             results.append(net_eval_extension.eval(net_parsers[i-1]))
-        draw_goodput([r[0] for r in results], [f"Flow {i}" for i in range(1, max_index+1)], f"goodput_time_{topo}_{algorithm}", min_gap=200, duration=10)
+        draw_goodput([r[0] for r in results], [f"Flow {i}" for i in range(1, max_index+1)], f"goodput_time_{topo}_{algorithm}", min_gap=200, duration=20)
     
     
 

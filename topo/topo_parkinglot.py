@@ -73,10 +73,15 @@ class ParkinglotTopo:
         self.net.stop()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--algorithm', '-A', default="dummy", 
-                    type=str, help='Bandwidth estimator', choices=["dummy", "HRCC", "GCC"])
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--algorithm', '-A', default="dummy", 
+    #                 type=str, help='Bandwidth estimator', choices=["dummy", "HRCC", "GCC"])
+    # args = parser.parse_args()
 
-    topo = ParkinglotTopo()
-    topo.run(args.algorithm)
+    # topo = ParkinglotTopo()
+    # topo.run(args.algorithm)
+
+
+    for alg in ["dummy", "HRCC", "GCC"]:
+        topo = ParkinglotTopo()
+        topo.run(alg)
