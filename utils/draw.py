@@ -141,12 +141,12 @@ def draw_combined_scores_from_json_traces(json_file):
     for i, (algo, label) in enumerate(zip(algorithms, labels)):
         plt.bar(x + i * (bar_width), heights[algo], width=bar_width, label=label)
 
-    plt.xticks(x + bar_width, traces)
-    plt.xlabel('Trace')
-    plt.ylabel('Combined Score')
+    plt.xticks(x + bar_width, traces, fontsize=16)
+    plt.xlabel('Trace', fontsize=20)
+    plt.ylabel('Combined Score', fontsize=20)
     plt.ylim(0, 100)
-    plt.legend(title="Algorithm", loc="upper right", fontsize=20)
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.legend(loc="upper right", fontsize=20)
+    plt.grid(True)
 
     plt.savefig(f"share/output/figures/trace_scores.pdf", bbox_inches='tight', format='pdf')
 
