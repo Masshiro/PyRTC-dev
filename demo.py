@@ -16,7 +16,8 @@ TRACE_FILES = {
     'taxi': ["trace-1552767958-taxi1", "trace-1552767958-taxi1"],
     'wired': ["wired48", "wired48"],
     'verizon': ["Verizon-LTE-driving.down", "Verizon-LTE-driving.down"],
-    'tmobile': ["TMobile-LTE-driving.down", "TMobile-LTE-driving.down"]
+    'tmobile': ["TMobile-LTE-driving.down", "TMobile-LTE-driving.down"],
+    '30mbps': ["med_30mbps.trace", "med_30mbps.trace"]
 }
 RESULTS = defaultdict(dict) # key: trace, value: dict of results
 ALGORITHMS = ["dummy", "HRCC", "GCC"]
@@ -78,7 +79,7 @@ def evaluate_one_scenario(trace: str, run_idx: int):
     result3 = net_eval_extension.eval(net_parser3)
     results = [result1, result2, result3]
     if run_idx == 0:
-        draw_goodput([result1[0], result2[0], result3[0]], ["dummy", "HRCC", "GCC"], f"goodput_time_{trace}.png")
+        draw_goodput([result1[0], result2[0], result3[0]], ["Dummy", "HRCC", "GCC"], f"goodput_time_{trace}")
         for alg in ["dummy", "HRCC", "GCC"]:
             RESULTS[trace][alg] = defaultdict(dict)
             RESULTS[trace][alg]["delay1"] = []
@@ -93,17 +94,17 @@ def evaluate_one_scenario(trace: str, run_idx: int):
         RESULTS[trace][alg]["goodput"].append(results[idx][3])
         RESULTS[trace][alg]["loss"].append(results[idx][4])
         RESULTS[trace][alg]["network score"].append(network_score(alg))
-        RESULTS[trace][alg]["SSIM"].append(calculate_video_ssim(f"share/input/testmedia/test.y4m", f"share/output/trace/outvideo_{alg}.y4m"))
+        # RESULTS[trace][alg]["SSIM"].append(calculate_video_ssim(f"share/input/testmedia/test.y4m", f"share/output/trace/outvideo_{alg}.y4m"))
 
-def demo(times=5):
+def demo(times=5, file_name="share/output/trace/demo_results.json"):
     for t_idx, trace in enumerate(list(TRACE_FILES.keys())):
         for i in range(times):
             for alg in ALGORITHMS:
                 run_one_scenario(alg, trace)
             print(f"({(t_idx)*times+i}/{times*N_TRACES}): Finished {i+1} times of {trace} trace")
             evaluate_one_scenario(trace, i)
-    with open("share/output/trace/demo_results.json", "w", encoding='utf-8') as resf:
-        json.dump(RESULTS, resf)
+    # with open(file_name, "w", encoding='utf-8') as resf:
+    #     json.dump(RESULTS, resf)
 
 def visual_demo(json_file):
     for alg in ["dummy", "HRCC", "GCC"]:
@@ -119,4 +120,5 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     # demo(3)
-    visual_demo("share/output/trace/demo_results.json")
+    demo(1)
+    # visual_demo("share/output/trace/demo_results.json")

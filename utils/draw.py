@@ -13,7 +13,7 @@ import argparse
 import json
 from itertools import cycle
 
-def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodput.png", min_gap=500, duration=60):
+def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodput", min_gap=500, duration=60):
     plt.figure()
     for idx, time_nbytes in enumerate(time_nbytes_list):
         timestamps = list(time_nbytes.keys())
@@ -39,10 +39,11 @@ def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodp
     xticks = np.arange(0, duration*1000+1, 10000)
     xtick_labels = (xticks / 1000).astype(int)
     plt.xticks(xticks, xtick_labels)
-    plt.ylabel("Goodput (Mbps)")
-    plt.xlabel("Time (s)")
+    plt.ylabel("Goodput (Mbps)", fontsize=20)
+    plt.xlabel("Time (s)", fontsize=20)
     plt.legend(loc='upper left')
-    plt.savefig(f"share/output/figures/{save_file_name}", bbox_inches='tight')
+    plt.grid(True)
+    plt.savefig(f"share/output/figures/{save_file_name}.pdf", format='pdf', bbox_inches='tight')
     
     return timestamps, rel_stamps
 
@@ -103,18 +104,18 @@ def draw_metrics_from_json_traces(json_file, algorithm_name, metric_x, metric_y,
     for i, (x, y, trace) in enumerate(zip(x_values, y_values, traces)):
         marker = next(markers)
         color = next(colors)
-        plt.scatter(x, y, label=trace, marker=marker, color=color, s=100)
+        plt.scatter(x, y, label=trace, marker=marker, color=color, s=200)
         # plt.text(x, y, trace, fontsize=9, ha='right')
 
     plt.gca().invert_xaxis()
-    plt.xlabel(xy_labels[0])
-    plt.ylabel(xy_labels[1])
+    plt.xlabel(xy_labels[0], fontsize=20)
+    plt.ylabel(xy_labels[1], fontsize=20)
     plt.grid(True)
-    plt.legend(title="Traces", loc='upper left')
+    plt.legend(title="Traces", loc='upper left', fontsize=20, title_fontsize=22)
     # plt.show()
 
 
-    plt.savefig(f"share/output/figures/{algorithm_name}_{metric_x}_{metric_y}.png", bbox_inches='tight')
+    plt.savefig(f"share/output/figures/{algorithm_name}_{metric_x}_{metric_y}.pdf", bbox_inches='tight', format='pdf')
 
 def draw_combined_scores_from_json_traces(json_file):
     with open(json_file, 'r') as file:
@@ -122,6 +123,7 @@ def draw_combined_scores_from_json_traces(json_file):
 
     traces = list(data.keys())
     algorithms = ['dummy', 'HRCC', 'GCC']
+    labels = ['Dummy', 'HRCC', 'GCC']
     bar_width = 0.2
 
     heights = {algo: [] for algo in algorithms}
@@ -136,17 +138,17 @@ def draw_combined_scores_from_json_traces(json_file):
     x = np.arange(len(traces))
     plt.figure(figsize=(12, 6))
 
-    for i, algo in enumerate(algorithms):
-        plt.bar(x + i * (bar_width), heights[algo], width=bar_width, label=algo)
+    for i, (algo, label) in enumerate(zip(algorithms, labels)):
+        plt.bar(x + i * (bar_width), heights[algo], width=bar_width, label=label)
 
     plt.xticks(x + bar_width, traces)
     plt.xlabel('Trace')
     plt.ylabel('Combined Score')
     plt.ylim(0, 100)
-    plt.legend(title="Algorithm", loc="upper right")
+    plt.legend(title="Algorithm", loc="upper right", fontsize=20)
     plt.grid(axis='y', linestyle='--', alpha=0.7)
 
-    plt.savefig(f"share/output/figures/trace_scores.png", bbox_inches='tight')
+    plt.savefig(f"share/output/figures/trace_scores.pdf", bbox_inches='tight', format='pdf')
 
 
 if __name__ == "__main__":
