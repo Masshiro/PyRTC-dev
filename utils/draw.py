@@ -34,14 +34,14 @@ def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodp
                 prev_time = rel_stamps[i]
                 goodput_gap = 0
         
-        plt.plot(goodput_time, goodput_list,  label=label_list[idx])
+        plt.plot(goodput_time, goodput_list,  label=label_list[idx], lw=3)
     
     xticks = np.arange(0, duration*1000+1, 10000)
     xtick_labels = (xticks / 1000).astype(int)
     plt.xticks(xticks, xtick_labels)
-    plt.ylabel("Goodput (Mbps)", fontsize=20)
-    plt.xlabel("Time (s)", fontsize=20)
-    plt.legend(loc='upper left')
+    plt.ylabel("Goodput (Mbps)", fontsize=24)
+    plt.xlabel("Time (s)", fontsize=24)
+    plt.legend(loc='lower center', ncol=len(label_list), fontsize=15)
     plt.grid(True)
     plt.savefig(f"share/output/figures/{save_file_name}.pdf", format='pdf', bbox_inches='tight')
     
@@ -104,14 +104,14 @@ def draw_metrics_from_json_traces(json_file, algorithm_name, metric_x, metric_y,
     for i, (x, y, trace) in enumerate(zip(x_values, y_values, traces)):
         marker = next(markers)
         color = next(colors)
-        plt.scatter(x, y, label=trace, marker=marker, color=color, s=200)
+        plt.scatter(x, y, label=trace, marker=marker, color=color, s=600)
         # plt.text(x, y, trace, fontsize=9, ha='right')
 
     plt.gca().invert_xaxis()
-    plt.xlabel(xy_labels[0], fontsize=20)
-    plt.ylabel(xy_labels[1], fontsize=20)
+    plt.xlabel(xy_labels[0], fontsize=24)
+    plt.ylabel(xy_labels[1], fontsize=24)
     plt.grid(True)
-    plt.legend(title="Traces", loc='upper left', fontsize=20, title_fontsize=22)
+    plt.legend(loc='upper left', fontsize=24)
     # plt.show()
 
 
@@ -141,11 +141,11 @@ def draw_combined_scores_from_json_traces(json_file):
     for i, (algo, label) in enumerate(zip(algorithms, labels)):
         plt.bar(x + i * (bar_width), heights[algo], width=bar_width, label=label)
 
-    plt.xticks(x + bar_width, traces, fontsize=16)
-    plt.xlabel('Trace', fontsize=20)
-    plt.ylabel('Combined Score', fontsize=20)
+    plt.xticks(x + bar_width, traces, fontsize=20)
+    plt.xlabel('Trace', fontsize=24)
+    plt.ylabel('Combined Score', fontsize=24)
     plt.ylim(0, 100)
-    plt.legend(loc="upper right", fontsize=20)
+    plt.legend(loc="upper center", fontsize=24, ncol=3)
     plt.grid(True)
 
     plt.savefig(f"share/output/figures/trace_scores.pdf", bbox_inches='tight', format='pdf')

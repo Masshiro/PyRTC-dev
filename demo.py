@@ -14,7 +14,6 @@ from utils.draw import *
 TRACE_FILES = {
     'att16': ["ATT-LTE-driving-2016.down", "ATT-LTE-driving-2016.down"],
     'taxi': ["trace-1552767958-taxi1", "trace-1552767958-taxi1"],
-    'wired': ["wired48", "wired48"],
     'verizon': ["Verizon-LTE-driving.down", "Verizon-LTE-driving.down"],
     'tmobile': ["TMobile-LTE-driving.down", "TMobile-LTE-driving.down"],
     '30mbps': ["med_30mbps.trace", "med_30mbps.trace"]
@@ -120,5 +119,19 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     # demo(3)
-    demo(1)
-    # visual_demo("share/output/trace/demo_results.json")
+    # demo(1)
+    visual_demo("share/output/trace/demo_results.json")
+
+    # for trace in TRACE_FILES:
+    #     net_parser1 = NetInfo('share/output/trace/webrtc_dummy.log')
+    #     net_parser2 = NetInfo('share/output/trace/webrtc_HRCC.log')
+    #     net_parser3 = NetInfo('share/output/trace/webrtc_GCC.log')
+    #     net_parser1.parse_net_log()
+    #     net_parser2.parse_net_log()
+    #     net_parser3.parse_net_log()
+    #     net_eval_extension = NetEvalMethodExtension()
+    #     result1 = net_eval_extension.eval(net_parser1)
+    #     result2 = net_eval_extension.eval(net_parser2)
+    #     result3 = net_eval_extension.eval(net_parser3)
+    #     results = [result1, result2, result3]
+    #     draw_goodput([result1[0], result2[0], result3[0]], ["Dummy", "HRCC", "GCC"], f"goodput_time_{trace}")
