@@ -41,7 +41,7 @@ def draw_goodput(time_nbytes_list: list, label_list: list, save_file_name="goodp
     plt.xticks(xticks, xtick_labels)
     plt.ylabel("Goodput (Mbps)", fontsize=24)
     plt.xlabel("Time (s)", fontsize=24)
-    plt.legend(loc='lower center', ncol=len(label_list), fontsize=15)
+    plt.legend(loc='upper center', ncol=len(label_list), fontsize=15)
     plt.grid(True)
     plt.savefig(f"share/output/figures/{save_file_name}.pdf", format='pdf', bbox_inches='tight')
     

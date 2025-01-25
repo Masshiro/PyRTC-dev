@@ -100,7 +100,7 @@ def demo(times=5, file_name="share/output/trace/demo_results.json"):
         for i in range(times):
             for alg in ALGORITHMS:
                 run_one_scenario(alg, trace)
-            print(f"({(t_idx)*times+i}/{times*N_TRACES}): Finished {i+1} times of {trace} trace")
+            print(f"({(t_idx)*times+i+1}/{times*N_TRACES}): Finished {i+1} times of {trace} trace")
             evaluate_one_scenario(trace, i)
     # with open(file_name, "w", encoding='utf-8') as resf:
     #     json.dump(RESULTS, resf)
@@ -119,8 +119,8 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     # demo(3)
-    # demo(1)
-    visual_demo("share/output/trace/demo_results.json")
+    demo(1)
+    # visual_demo("share/output/trace/demo_results.json")
 
     # for trace in TRACE_FILES:
     #     net_parser1 = NetInfo('share/output/trace/webrtc_dummy.log')
